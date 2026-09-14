@@ -215,18 +215,104 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
     <div className="space-y-5 pt-5">
       {/* FDI Table */}
       <div className="card-base overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 py-4 border-b border-border gap-3">
           <div>
             <h3 className="font-semibold text-foreground text-sm">Odontograma — Nomenclatura FDI</h3>
             <p className="text-xs text-muted-foreground mt-0.5">Cuadrantes superiores: 1 (der) y 2 (izq) · Inferiores: 4 (der) y 3 (izq)</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="flex items-center gap-2 bg-primary text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors"
+            className="flex items-center justify-center gap-2 bg-primary text-white px-4 py-2.5 sm:px-3 sm:py-2 rounded-lg text-sm sm:text-xs font-medium hover:bg-primary/90 transition-colors"
           >
-            <PlusCircle className="w-3.5 h-3.5" /> Nuevo Registro
+            <PlusCircle className="w-4 h-4 sm:w-3.5 sm:h-3.5" /> {showForm ? 'Ocultar Formulario' : 'Nuevo Registro'}
           </button>
         </div>
+
+        {/* New entry form (MOVED UP FOR BETTER UX) */}
+        {showForm && (
+          <div className="p-5 border-b border-border bg-primary/5 animate-fade-in">
+            <h3 className="font-semibold text-foreground text-sm mb-4 flex items-center gap-2">
+              <PlusCircle className="w-4 h-4 text-primary" /> Registrar Hallazgo / Tratamiento
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Pieza Dental (FDI) *</label>
+                <select
+                  value={form.toothNumber}
+                  onChange={(e) => setForm((f) => ({ ...f, toothNumber: e.target.value }))}
+                  className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                >
+                  <option value="">Seleccionar pieza...</option>
+                  {Object.entries(FDI_TEETH).map(([quadrant, teeth]) => (
+                    <optgroup key={quadrant} label={quadrant}>
+                      {teeth.map((t) => <option key={t} value={t}>Pieza {t}</option>)}
+                    </optgroup>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Superficie</label>
+                <select
+                  value={form.surface}
+                  onChange={(e) => setForm((f) => ({ ...f, surface: e.target.value }))}
+                  className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                >
+                  <option value="">— Opcional —</option>
+                  {['Oclusal','Mesial','Distal','Vestibular','Palatino/Lingual','Cervical','Ocluso-mesial','Ocluso-distal','Toda la corona'].map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Diagnóstico *</label>
+                <select
+                  value={form.diagnosis}
+                  onChange={(e) => setForm((f) => ({ ...f, diagnosis: e.target.value }))}
+                  className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                >
+                  <option value="">Seleccionar diagnóstico...</option>
+                  {DIAGNOSES.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Tratamiento a realizar *</label>
+                <select
+                  value={form.treatment}
+                  onChange={(e) => setForm((f) => ({ ...f, treatment: e.target.value }))}
+                  className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                >
+                  <option value="">Seleccionar tratamiento...</option>
+                  {TREATMENTS.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Notas adicionales</label>
+                <input
+                  type="text"
+                  value={form.notes}
+                  onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
+                  placeholder="Observaciones clínicas relevantes..."
+                  className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowForm(false)}
+                className="px-4 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={!form.toothNumber || !form.diagnosis || !form.treatment}
+                className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <CheckCircle2 className="w-4 h-4" /> Guardar Registro
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Quadrant grid */}
         <div className="p-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -296,92 +382,6 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
           })}
         </div>
       </div>
-
-      {/* New entry form */}
-      {showForm && (
-        <div className="card-base p-5 border-primary/30 border-2 animate-fade-in">
-          <h3 className="font-semibold text-foreground text-sm mb-4 flex items-center gap-2">
-            <PlusCircle className="w-4 h-4 text-primary" /> Registrar Hallazgo / Tratamiento
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-            <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Pieza Dental (FDI) *</label>
-              <select
-                value={form.toothNumber}
-                onChange={(e) => setForm((f) => ({ ...f, toothNumber: e.target.value }))}
-                className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
-              >
-                <option value="">Seleccionar pieza...</option>
-                {Object.entries(FDI_TEETH).map(([quadrant, teeth]) => (
-                  <optgroup key={quadrant} label={quadrant}>
-                    {teeth.map((t) => <option key={t} value={t}>Pieza {t}</option>)}
-                  </optgroup>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Superficie</label>
-              <select
-                value={form.surface}
-                onChange={(e) => setForm((f) => ({ ...f, surface: e.target.value }))}
-                className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
-              >
-                <option value="">— Opcional —</option>
-                {['Oclusal','Mesial','Distal','Vestibular','Palatino/Lingual','Cervical','Ocluso-mesial','Ocluso-distal','Toda la corona'].map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Diagnóstico *</label>
-              <select
-                value={form.diagnosis}
-                onChange={(e) => setForm((f) => ({ ...f, diagnosis: e.target.value }))}
-                className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
-              >
-                <option value="">Seleccionar diagnóstico...</option>
-                {DIAGNOSES.map((d) => <option key={d} value={d}>{d}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Tratamiento a realizar *</label>
-              <select
-                value={form.treatment}
-                onChange={(e) => setForm((f) => ({ ...f, treatment: e.target.value }))}
-                className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
-              >
-                <option value="">Seleccionar tratamiento...</option>
-                {TREATMENTS.map((t) => <option key={t} value={t}>{t}</option>)}
-              </select>
-            </div>
-            <div className="sm:col-span-2">
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Notas adicionales</label>
-              <input
-                type="text"
-                value={form.notes}
-                onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
-                placeholder="Observaciones clínicas relevantes..."
-                className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
-              />
-            </div>
-          </div>
-          <div className="flex gap-3 justify-end">
-            <button
-              onClick={() => setShowForm(false)}
-              className="px-4 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={handleSubmit}
-              disabled={!form.toothNumber || !form.diagnosis || !form.treatment}
-              className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <CheckCircle2 className="w-4 h-4" /> Guardar Registro
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Entries list */}
       {entries.length > 0 && (
