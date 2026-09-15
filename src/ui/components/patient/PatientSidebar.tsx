@@ -2,15 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { FileText, Activity, Calendar, User, Stethoscope, LogOut } from 'lucide-react';
+import { FileText, Activity, Calendar, User, Stethoscope, LogOut, CreditCard, Image as ImageIcon } from 'lucide-react';
 import { useAuthStore } from '@identity/presentation/useAuthStore';
 import { cn, getInitials } from '@shared/lib/utils';
 import { SheetClose } from '@ui/components/ui/Sheet';
 
 const navItems = [
-  { label: 'Mis Recetas',    href: '/patient',              icon: FileText,  exact: true },
+  { label: 'Mis Recetas',    href: '/patient',              icon: FileText,   exact: true },
   { label: 'Mi Tratamiento', href: '/patient/treatment',    icon: Activity },
   { label: 'Citas',          href: '/patient/appointments', icon: Calendar },
+  { label: 'Mis Pagos',      href: '/patient/finances',     icon: CreditCard },
+  { label: 'Radiografías',   href: '/patient/xrays',        icon: ImageIcon },
   { label: 'Mi Perfil',      href: '/patient/profile',      icon: User },
 ];
 
