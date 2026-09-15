@@ -215,7 +215,6 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
     <div className="space-y-5 pt-5">
       {/* FDI Table */}
       <div className="card-base overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 py-4 border-b border-border gap-3">
           <div>
             <h3 className="font-semibold text-foreground text-sm">Odontograma — Nomenclatura FDI</h3>
@@ -223,10 +222,8 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="flex items-center gap-2 bg-primary text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors"
             className="flex items-center justify-center gap-2 bg-primary text-white px-4 py-2.5 sm:px-3 sm:py-2 rounded-lg text-sm sm:text-xs font-medium hover:bg-primary/90 transition-colors"
           >
-            <PlusCircle className="w-3.5 h-3.5" /> Nuevo Registro
             <PlusCircle className="w-4 h-4 sm:w-3.5 sm:h-3.5" /> {showForm ? 'Ocultar Formulario' : 'Nuevo Registro'}
           </button>
         </div>
