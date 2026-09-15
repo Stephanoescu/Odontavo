@@ -164,8 +164,8 @@ export default function FinancesPage() {
       </div>
 
       {/* Table */}
-      <div className="card-base overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="card-base overflow-x-auto">
+        <table className="w-full text-sm min-w-[700px]">
           <thead>
             <tr className="border-b border-border bg-muted/30">
               <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Fecha</th>
@@ -216,9 +216,9 @@ export default function FinancesPage() {
                         'hover:brightness-95 transition-all'
                       )}
                     >
-                      <option value="pagado" className="bg-background text-emerald-700 font-semibold">Pagado</option>
-                      <option value="pendiente" className="bg-background text-amber-700 font-semibold">Pendiente</option>
-                      <option value="cancelado" className="bg-background text-red-700 font-semibold">Cancelado</option>
+                      <option value="pagado" className="bg-background text-emerald-700 font-semibold uppercase">Pagado</option>
+                      <option value="pendiente" className="bg-background text-amber-700 font-semibold uppercase">Pendiente</option>
+                      <option value="cancelado" className="bg-background text-red-700 font-semibold uppercase">Cancelado</option>
                     </select>
                   </td>
                 </tr>
@@ -238,13 +238,13 @@ export default function FinancesPage() {
       {/* New Transaction Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in p-4">
-          <div className="bg-background rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
+          <div className="bg-background rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col max-h-full">
             <div className="flex items-center justify-between p-4 border-b border-border bg-muted/30">
               <h2 className="font-bold text-foreground flex items-center gap-2"><PlusCircle className="w-5 h-5 text-primary" /> Nuevo Registro</h2>
               <button onClick={() => setShowModal(false)} className="p-1 text-muted-foreground hover:bg-muted rounded-md"><X className="w-5 h-5" /></button>
             </div>
-            <form onSubmit={handleCreate} className="p-5 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleCreate} className="p-5 overflow-y-auto space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-semibold text-muted-foreground uppercase mb-1.5 block">Tipo *</label>
                   <select required value={newTx.type} onChange={e => setNewTx({...newTx, type: e.target.value as TransactionType})} className="w-full h-9 px-3 rounded-lg border border-input text-sm bg-background focus:ring-2 focus:ring-primary/30 outline-none">
@@ -278,7 +278,7 @@ export default function FinancesPage() {
                 <input required type="text" placeholder="Ej: Resina simple" value={newTx.concept} onChange={e => setNewTx({...newTx, concept: e.target.value})} className="w-full h-9 px-3 rounded-lg border border-input text-sm bg-background focus:ring-2 focus:ring-primary/30 outline-none" />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-semibold text-muted-foreground uppercase mb-1.5 block">Monto *</label>
                   <div className="relative">

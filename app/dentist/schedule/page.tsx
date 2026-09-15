@@ -90,8 +90,8 @@ export default function SchedulePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar view */}
-        <div className="lg:col-span-2 card-base overflow-hidden">
-          <div className="grid grid-cols-7 border-b border-border text-xs">
+        <div className="lg:col-span-2 card-base overflow-x-auto">
+          <div className="grid grid-cols-7 border-b border-border text-xs min-w-[600px]">
             <div className="px-3 py-3 text-muted-foreground" />
             {DAYS.map((d, i) => {
               const isToday = weekDates[i]?.toDateString() === new Date().toDateString();
@@ -105,7 +105,7 @@ export default function SchedulePage() {
           </div>
           <div className="divide-y divide-border/60">
             {HOURS.map((hour) => (
-              <div key={hour} className="grid grid-cols-7 min-h-[48px]">
+              <div key={hour} className="grid grid-cols-7 min-h-[48px] min-w-[600px]">
                 <div className="px-3 py-2 text-[11px] text-muted-foreground font-mono">{hour}</div>
                 {DAYS.map((d, di) => {
                   const appt = getApptForSlot(di, hour);
@@ -170,7 +170,7 @@ export default function SchedulePage() {
                   {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-semibold text-muted-foreground uppercase mb-1.5 block">Fecha *</label>
                   <input required type="date" value={newAppt.date} onChange={e => setNewAppt({...newAppt, date: e.target.value})} className="w-full h-9 px-3 rounded-lg border border-input text-sm bg-background focus:ring-2 focus:ring-primary/30 outline-none" />

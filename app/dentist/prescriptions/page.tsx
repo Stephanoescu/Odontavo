@@ -59,8 +59,8 @@ export default function PrescriptionsPage() {
         </div>
       </div>
 
-      <div className="card-base overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="card-base overflow-x-auto">
+        <table className="w-full text-sm min-w-[700px]">
           <thead>
             <tr className="border-b border-border bg-muted/30">
               {['Paciente', 'Diagnóstico', 'Medicamentos', 'Fecha', 'Estado'].map(h => (

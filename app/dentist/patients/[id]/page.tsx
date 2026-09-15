@@ -82,7 +82,7 @@ function TabPerfil({ patient }: { patient: any }) {
           <h3 className="font-semibold text-foreground text-sm flex items-center gap-2">
             <Heart className="w-4 h-4 text-rose-500" /> Resumen Médico
           </h3>
-          <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div>
               <p className="text-xs text-muted-foreground">Nacimiento</p>
               <p className="font-medium">{formatDate(patient.dateOfBirth)}</p>
@@ -112,7 +112,7 @@ function TabPerfil({ patient }: { patient: any }) {
       {/* Emergency contact */}
       <div className="card-base p-5">
         <h3 className="font-semibold text-foreground text-sm mb-3">Contacto de Emergencia</h3>
-        <div className="grid grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
           <div><p className="text-xs text-muted-foreground">Nombre</p><p className="font-medium">{patient.emergencyContact.name}</p></div>
           <div><p className="text-xs text-muted-foreground">Relación</p><p className="font-medium">{patient.emergencyContact.relationship}</p></div>
           <div><p className="text-xs text-muted-foreground">Teléfono</p><p className="font-medium">{patient.emergencyContact.phone}</p></div>
@@ -223,7 +223,7 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
   return (
     <div className="space-y-5 pt-5">
       {/* FDI Table */}
-      <div className="card-base overflow-hidden">
+      <div className="card-base overflow-x-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 py-4 border-b border-border gap-3">
           <div>
             <h3 className="font-semibold text-foreground text-sm">Odontograma — Nomenclatura FDI</h3>
@@ -336,7 +336,7 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
         )}
 
         {/* Quadrant grid */}
-        <div className="p-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="p-5 grid grid-cols-1 xl:grid-cols-2 gap-4">
           {Object.entries(FDI_TEETH).map(([quadrant, teeth]) => {
             const quadrantEntries = entries.filter((e) => teeth.includes(e.toothNumber));
             return (
@@ -509,7 +509,7 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
 
       {/* Entries list */}
       {entries.length > 0 && (
-        <div className="card-base overflow-hidden">
+        <div className="card-base overflow-x-auto">
           <div className="px-5 py-3 border-b border-border bg-muted/30">
             <h3 className="font-semibold text-foreground text-sm">Hallazgos Registrados ({entries.length})</h3>
           </div>
@@ -623,7 +623,7 @@ function TabEstadoCuenta({ patientId }: { patientId: string }) {
       </div>
 
       {/* Transaction list */}
-      <div className="card-base overflow-hidden">
+      <div className="card-base overflow-x-auto">
         <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
           <h3 className="font-semibold text-foreground text-sm">Historial de Transacciones</h3>
           <button className="flex items-center gap-1.5 text-xs text-primary hover:underline">

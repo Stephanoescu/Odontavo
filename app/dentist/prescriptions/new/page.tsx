@@ -187,7 +187,7 @@ export default function NewPrescriptionPage() {
                           </div>
                         )}
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div>
                           <label className="text-[10px] text-muted-foreground mb-1 block">Dosis</label>
                           {match ? (
@@ -255,7 +255,7 @@ export default function NewPrescriptionPage() {
 
           <div className="mt-4 space-y-2.5">
             <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">Enviar / Guardar</p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {([
                 { action: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle, hover: 'hover:border-green-400 hover:bg-green-50 hover:text-green-700', spin: 'border-green-400' },
                 { action: 'email',    label: 'Email',    Icon: Mail,           hover: 'hover:border-blue-400 hover:bg-blue-50 hover:text-blue-700',   spin: 'border-blue-400' },

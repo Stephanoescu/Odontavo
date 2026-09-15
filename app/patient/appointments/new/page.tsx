@@ -218,7 +218,7 @@ export default function NewAppointmentPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">Tipo de cita</p>
                 <p className="font-semibold text-foreground">
