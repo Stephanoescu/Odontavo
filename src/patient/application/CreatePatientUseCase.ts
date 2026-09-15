@@ -1,3 +1,4 @@
+import { generateId } from '@shared/lib/utils';
 import { IPatientRepository } from '../domain/IPatientRepository';
 import { Patient } from '../domain/Patient';
 import { ContactInfo } from '../domain/ContactInfo';
@@ -26,7 +27,7 @@ export class CreatePatientUseCase {
     if (!dto.name.trim()) return fail('El nombre es requerido');
     if (!dto.email.includes('@')) return fail('Email inválido');
 
-    const id = `patient-${Date.now()}`;
+    const id = generateId();
 
     const patient = Patient.create(id, {
       name: dto.name.trim(),

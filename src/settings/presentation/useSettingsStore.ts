@@ -1,4 +1,5 @@
-﻿import { create } from 'zustand';
+import { generateId } from '@shared/lib/utils';
+import { create } from 'zustand';
 import { treatmentRepository } from '@settings/infrastructure/SupabaseTreatmentRepository';
 import { TreatmentCategory } from '@settings/domain/Treatment';
 
@@ -43,7 +44,7 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
     set({ isLoading: true });
     // dynamic import of domain just for creation
     const { Treatment } = await import('@settings/domain/Treatment');
-    const id = `t-${Date.now()}`;
+    const id = generateId();
     const tx = Treatment.create(id, { ...dto, active: true });
     await treatmentRepository.save(tx);
     

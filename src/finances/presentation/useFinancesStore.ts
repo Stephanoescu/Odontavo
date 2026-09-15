@@ -1,3 +1,4 @@
+import { generateId } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { financesRepository } from '@finances/infrastructure/SupabaseFinancesRepository';
 import { Transaction, TransactionType, TransactionStatus } from '@finances/domain/Transaction';
@@ -43,7 +44,7 @@ export const useFinancesStore = create<FinancesStore>((set, get) => ({
 
   createTransaction: async (dto: Omit<TransactionDto, 'id' | 'patientName'> & { patientName: string }) => {
     set({ isLoading: true });
-    const id = `tx-${Date.now()}`;
+    const id = generateId();
     const tx = Transaction.create(id, {
       ...dto,
       date: dto.date || new Date().toISOString().split('T')[0],

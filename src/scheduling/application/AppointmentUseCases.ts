@@ -1,3 +1,4 @@
+import { generateId } from '@shared/lib/utils';
 import { IAppointmentRepository } from '../domain/IAppointmentRepository';
 import { AppointmentDto, CreateAppointmentDto, appointmentToDto } from './dtos/AppointmentDtos';
 import { Appointment } from '../domain/Appointment';
@@ -37,7 +38,7 @@ export class CreateAppointmentUseCase {
   constructor(private readonly repo: IAppointmentRepository) {}
 
   async execute(dto: CreateAppointmentDto): Promise<Result<AppointmentDto>> {
-    const id  = `apt-${Date.now()}`;
+    const id  = generateId();
     const apt = Appointment.create(id, {
       ...dto,
       status: AppointmentStatus.PENDING,

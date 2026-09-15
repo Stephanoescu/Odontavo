@@ -13,7 +13,7 @@ export class CreatePrescriptionUseCase {
     try {
       const medications = dto.medications.map((m) => Medication.create(m));
 
-      const prescription = Prescription.create(`rx-${generateId()}`, {
+      const prescription = Prescription.create(generateId(), {
         patientId:              dto.patientId,
         patientName:            dto.patientName,
         patientEmail:           dto.patientEmail,

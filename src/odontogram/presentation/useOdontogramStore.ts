@@ -1,4 +1,5 @@
-﻿import { create } from 'zustand';
+import { generateId } from '@shared/lib/utils';
+import { create } from 'zustand';
 import { odontogramRepository } from '@odontogram/infrastructure/SupabaseOdontogramRepository';
 import { OdontogramEntry } from '@odontogram/domain/OdontogramEntry';
 
@@ -33,7 +34,7 @@ export const useOdontogramStore = create<OdontogramStore>((set) => ({
   },
 
   addEntry: async (dto) => {
-    const id = `odo-${Date.now()}`;
+    const id = generateId();
     const entry = OdontogramEntry.create(id, { ...dto });
     await odontogramRepository.save(entry);
     set((s) => ({ entries: [...s.entries, entry.toPlain()] }));
