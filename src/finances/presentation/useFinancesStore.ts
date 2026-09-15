@@ -24,6 +24,7 @@ interface FinancesStore {
   totalIncome: () => number;
   totalPending: () => number;
   createTransaction: (dto: Omit<TransactionDto, 'id' | 'patientName'> & { patientName: string }) => Promise<void>;
+  updateTransactionStatus: (id: string, status: TransactionStatus) => Promise<void>;
 }
 
 export const useFinancesStore = create<FinancesStore>((set, get) => ({
@@ -52,6 +53,15 @@ export const useFinancesStore = create<FinancesStore>((set, get) => ({
     await financesRepository.save(tx);
     const raw = await financesRepository.findAll();
     set({ transactions: raw.map(t => t.toPlain()), isLoading: false });
+  },
+
+  updateTransactionStatus: async (id: string, status: TransactionStatus) => {
+    await financesRepository.updateStatus(id, status);
+    set((state) => ({
+      transactions: state.transactions.map((t) =>
+        t.id === id ? { ...t, status } : t
+      ),
+    }));
   },
 
   totalIncome: () =>

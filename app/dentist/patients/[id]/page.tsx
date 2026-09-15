@@ -597,7 +597,7 @@ function TabRadiografias() {
 
 // ─── Tab: Estado de Cuenta ────────────────────────────────────────────────────
 function TabEstadoCuenta({ patientId }: { patientId: string }) {
-  const { transactions, isLoading, loadByPatient } = useFinancesStore();
+  const { transactions, isLoading, loadByPatient, updateTransactionStatus } = useFinancesStore();
 
   useEffect(() => { loadByPatient(patientId); }, [patientId]);
 
@@ -647,12 +647,22 @@ function TabEstadoCuenta({ patientId }: { patientId: string }) {
                     <p className="text-xs text-muted-foreground">{formatDate(tx.date, 'd MMM yyyy')} {tx.method && `· ${tx.method}`}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className={cn('font-bold text-sm', tx.type === 'ingreso' ? 'text-emerald-600' : 'text-foreground')}>
+                    <p className={cn('font-bold text-sm mb-1', tx.type === 'ingreso' ? 'text-emerald-600' : 'text-foreground')}>
                       {tx.type === 'ingreso' ? '+' : ''}{fmt(tx.amount)}
                     </p>
-                    <span className={cn('text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded border', stCfg.cls)}>
-                      {stCfg.label}
-                    </span>
+                    <select
+                      value={tx.status}
+                      onChange={(e) => updateTransactionStatus(tx.id, e.target.value as any)}
+                      className={cn(
+                        'text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded border outline-none cursor-pointer appearance-none text-center',
+                        stCfg.cls,
+                        'hover:brightness-95 transition-all'
+                      )}
+                    >
+                      <option value="pagado" className="bg-background text-emerald-700 font-semibold uppercase">Pagado</option>
+                      <option value="pendiente" className="bg-background text-amber-700 font-semibold uppercase">Pendiente</option>
+                      <option value="cancelado" className="bg-background text-red-700 font-semibold uppercase">Cancelado</option>
+                    </select>
                   </div>
                 </div>
               );

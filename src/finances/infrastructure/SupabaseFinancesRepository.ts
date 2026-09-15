@@ -1,4 +1,4 @@
-﻿import { createClient } from '@shared/lib/supabase/client';
+import { createClient } from '@shared/lib/supabase/client';
 import { IFinancesRepository } from '@finances/domain/IFinancesRepository';
 import { Transaction } from '@finances/domain/Transaction';
 
@@ -77,6 +77,15 @@ export class SupabaseFinancesRepository implements IFinancesRepository {
       method: plain.method ?? null,
       notes: plain.notes ?? null,
     });
+
+    if (error) throw new Error(error.message);
+  }
+
+  async updateStatus(id: string, status: 'pagado' | 'pendiente' | 'cancelado'): Promise<void> {
+    const { error } = await this.supabase
+      .from('transactions')
+      .update({ status })
+      .eq('id', id);
 
     if (error) throw new Error(error.message);
   }

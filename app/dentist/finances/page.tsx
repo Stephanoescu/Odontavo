@@ -23,7 +23,7 @@ const STATUS_CFG = {
 } as const;
 
 export default function FinancesPage() {
-  const { transactions, isLoading, loadAll, totalIncome, totalPending, createTransaction } = useFinancesStore();
+  const { transactions, isLoading, loadAll, totalIncome, totalPending, createTransaction, updateTransactionStatus } = useFinancesStore();
   const { patients, loadAll: loadPatients } = usePatientStore();
   
   const [search, setSearch] = useState('');
@@ -173,7 +173,7 @@ export default function FinancesPage() {
               <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden md:table-cell">Concepto</th>
               <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tipo</th>
               <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Monto</th>
-              <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden sm:table-cell">Estado</th>
+              <th className="text-center px-5 py-3.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden sm:table-cell">Estado</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -206,10 +206,20 @@ export default function FinancesPage() {
                       {tx.type === 'ingreso' ? '+' : (tx.type === 'gasto' ? '-' : '')}{fmt(tx.amount)}
                     </span>
                   </td>
-                  <td className="px-5 py-3.5 hidden sm:table-cell">
-                    <span className={cn('text-[11px] font-bold px-2 py-0.5 rounded-full', statusCfg.cls)}>
-                      {statusCfg.label}
-                    </span>
+                  <td className="px-5 py-3.5 hidden sm:table-cell text-center">
+                    <select
+                      value={tx.status}
+                      onChange={(e) => updateTransactionStatus(tx.id, e.target.value as TransactionStatus)}
+                      className={cn(
+                        'text-[11px] font-bold px-2 py-0.5 rounded-full outline-none cursor-pointer appearance-none text-center',
+                        statusCfg.cls,
+                        'hover:brightness-95 transition-all'
+                      )}
+                    >
+                      <option value="pagado" className="bg-background text-emerald-700 font-semibold">Pagado</option>
+                      <option value="pendiente" className="bg-background text-amber-700 font-semibold">Pendiente</option>
+                      <option value="cancelado" className="bg-background text-red-700 font-semibold">Cancelado</option>
+                    </select>
                   </td>
                 </tr>
               );
