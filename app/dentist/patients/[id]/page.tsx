@@ -184,11 +184,19 @@ function TabHistoria({ patient, onSaveNote }: { patient: any, onSaveNote: (note:
 function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId: string }) {
   const { entries, isLoading, loadByPatient, addEntry, removeEntry } = useOdontogramStore();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    toothNumber: string;
+    surface: string;
+    diagnosis: string;
+    treatment: string;
+    status: 'diagnostico' | 'planificado' | 'completado';
+    notes: string;
+  }>({
     toothNumber: '',
     surface: '',
     diagnosis: '',
     treatment: '',
+    status: 'diagnostico',
     notes: '',
   });
   const [showForm, setShowForm] = useState(false);
@@ -205,9 +213,10 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
       surface: form.surface || undefined,
       diagnosis: form.diagnosis,
       treatment: form.treatment,
+      status: form.status,
       notes: form.notes || undefined,
     });
-    setForm({ toothNumber: '', surface: '', diagnosis: '', treatment: '', notes: '' });
+    setForm({ toothNumber: '', surface: '', diagnosis: '', treatment: '', status: 'diagnostico', notes: '' });
     setShowForm(false);
   };
 
@@ -285,6 +294,18 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
                   {TREATMENTS.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Estado del Tratamiento *</label>
+                <select
+                  value={form.status}
+                  onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as any }))}
+                  className="w-full h-9 border border-input rounded-lg px-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                >
+                  <option value="diagnostico">Sólo Diagnóstico (Por Hacer)</option>
+                  <option value="planificado">Planificado / Agendado</option>
+                  <option value="completado">Completado / Curado</option>
+                </select>
+              </div>
               <div className="sm:col-span-2">
                 <label className="text-xs font-medium text-muted-foreground block mb-1">Notas adicionales</label>
                 <input
@@ -329,12 +350,20 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
                       <th className="text-left px-3 py-2 text-xs font-semibold text-muted-foreground w-16">Pieza</th>
                       <th className="text-left px-3 py-2 text-xs font-semibold text-muted-foreground">Diagnóstico</th>
                       <th className="text-left px-3 py-2 text-xs font-semibold text-muted-foreground hidden sm:table-cell">Tratamiento</th>
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-muted-foreground hidden lg:table-cell">Estado</th>
                       <th className="w-8" />
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {teeth.map((tooth) => {
                       const entry = quadrantEntries.find((e) => e.toothNumber === tooth);
+                      
+                      const getStatusColor = (s: string) => {
+                        if (s === 'completado') return 'bg-emerald-100 text-emerald-700';
+                        if (s === 'planificado') return 'bg-blue-100 text-blue-700';
+                        return 'bg-amber-100 text-amber-700';
+                      };
+
                       return (
                         <tr key={tooth} className={cn('transition-colors', entry ? 'bg-primary/5 hover:bg-primary/10' : 'hover:bg-muted/20')}>
                           <td className="px-3 py-2.5">
@@ -358,6 +387,15 @@ function TabOdontograma({ patientId, dentistId }: { patientId: string; dentistId
                           <td className="px-3 py-2.5 hidden sm:table-cell">
                             {entry ? (
                               <span className="text-xs text-foreground">{entry.treatment}</span>
+                            ) : (
+                              <span className="text-muted-foreground text-xs">—</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2.5 hidden lg:table-cell">
+                            {entry ? (
+                              <span className={cn('px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide', getStatusColor(entry.status))}>
+                                {entry.status}
+                              </span>
                             ) : (
                               <span className="text-muted-foreground text-xs">—</span>
                             )}

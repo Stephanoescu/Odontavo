@@ -10,6 +10,7 @@ interface OdontogramEntryDto {
   surface?: string;
   diagnosis: string;
   treatment: string;
+  status: 'diagnostico' | 'planificado' | 'completado';
   notes?: string;
   date: string;
   dentistId: string;

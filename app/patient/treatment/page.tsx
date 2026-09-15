@@ -40,14 +40,21 @@ export default function PatientTreatmentPage() {
           <div className="relative space-y-0">
             {sortedEntries.map((step, i) => {
               const isLast = i === sortedEntries.length - 1;
+              const statusCfg = (() => {
+                if (step.status === 'planificado') return { icon: Activity, color: 'text-blue-500', bg: 'bg-blue-50 border-blue-200', line: 'bg-blue-200', label: 'Planificado' };
+                if (step.status === 'diagnostico') return { icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50 border-amber-200', line: 'bg-amber-200', label: 'Diagnóstico' };
+                return { icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-50 border-emerald-200', line: 'bg-emerald-200', label: 'Completado' };
+              })();
+              const Icon = statusCfg.icon;
+
               return (
                 <div key={step.id} className="flex gap-4">
                   <div className="flex flex-col items-center">
-                    <div className="w-9 h-9 rounded-full border-2 flex items-center justify-center shrink-0 bg-emerald-50 border-emerald-200">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center shrink-0 ${statusCfg.bg}`}>
+                      <Icon className={`w-4 h-4 ${statusCfg.color}`} />
                     </div>
                     {!isLast && (
-                      <div className="w-0.5 flex-1 my-1 bg-emerald-200 min-h-[24px]" />
+                      <div className={`w-0.5 flex-1 my-1 ${statusCfg.line} min-h-[24px]`} />
                     )}
                   </div>
                   <div className="flex-1 pb-5">
@@ -59,7 +66,10 @@ export default function PatientTreatmentPage() {
                         <p className="text-xs text-muted-foreground mt-0.5">Diagnóstico: {step.diagnosis}</p>
                         {step.notes && <p className="text-xs text-muted-foreground mt-0.5">Nota: {step.notes}</p>}
                       </div>
-                      <div className="text-right shrink-0">
+                      <div className="text-right shrink-0 flex flex-col items-end gap-1">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${statusCfg.bg} ${statusCfg.color}`}>
+                          {statusCfg.label}
+                        </span>
                         <p className="text-[11px] text-muted-foreground mt-1">{formatDate(step.date, 'd MMM yyyy')}</p>
                       </div>
                     </div>

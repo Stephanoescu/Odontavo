@@ -6,12 +6,15 @@ import { Entity } from '@shared/domain/Entity';
  */
 export type ToothQuadrant = 1 | 2 | 3 | 4;
 
+export type OdontogramStatus = 'diagnostico' | 'planificado' | 'completado';
+
 export interface OdontogramEntryProps {
   patientId: string;
   toothNumber: string;     // FDI notation: '11' to '48'
   surface?: string;        // Mesial, Distal, Oclusal, Vestibular, Palatino/Lingual
   diagnosis: string;
   treatment: string;
+  status: OdontogramStatus;
   notes?: string;
   date: string;
   dentistId: string;
@@ -34,6 +37,7 @@ export class OdontogramEntry extends Entity<string> {
   get surface()     { return this.props.surface; }
   get diagnosis()   { return this.props.diagnosis; }
   get treatment()   { return this.props.treatment; }
+  get status()      { return this.props.status; }
   get notes()       { return this.props.notes; }
   get date()        { return this.props.date; }
   get dentistId()   { return this.props.dentistId; }
@@ -46,6 +50,7 @@ export class OdontogramEntry extends Entity<string> {
       surface:     this.props.surface,
       diagnosis:   this.props.diagnosis,
       treatment:   this.props.treatment,
+      status:      this.props.status,
       notes:       this.props.notes,
       date:        this.props.date,
       dentistId:   this.props.dentistId,

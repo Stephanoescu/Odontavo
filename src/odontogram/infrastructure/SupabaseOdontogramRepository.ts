@@ -1,4 +1,4 @@
-﻿import { createClient } from '@shared/lib/supabase/client';
+import { createClient } from '@shared/lib/supabase/client';
 import { IOdontogramRepository } from '@odontogram/domain/IOdontogramRepository';
 import { OdontogramEntry } from '@odontogram/domain/OdontogramEntry';
 
@@ -15,6 +15,7 @@ interface OdontogramRow {
   surface: string | null;
   diagnosis: string;
   treatment: string;
+  status: 'diagnostico' | 'planificado' | 'completado';
   notes: string | null;
   date: string;
 }
@@ -26,6 +27,7 @@ function rowToEntry(row: OdontogramRow): OdontogramEntry {
     surface: row.surface ?? undefined,
     diagnosis: row.diagnosis,
     treatment: row.treatment,
+    status: row.status ?? 'completado',
     notes: row.notes ?? undefined,
     date: row.date,
     dentistId: row.dentist_id,
@@ -59,6 +61,7 @@ export class SupabaseOdontogramRepository implements IOdontogramRepository {
       surface: plain.surface ?? null,
       diagnosis: plain.diagnosis,
       treatment: plain.treatment,
+      status: plain.status,
       notes: plain.notes ?? null,
       date: plain.date,
     });
